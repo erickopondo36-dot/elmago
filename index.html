@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>School Evaluation App - Ndumbinyi Primary and Junior School</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    #loginScreen {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 500px;
+      padding: 40px;
+    }
+
+    .login-box {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 350px;
+    }
+
+    .login-box h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 500;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    button {
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    #loginForm button {
+      width: 100%;
+    }
+
+    #loginError {
+      color: #e74c3c;
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .main-content {
+      display: flex;
+      min-height: 600px;
+    }
+
+    nav {
+      width: 250px;
+      background: #f8f9fa;
+      border-right: 1px solid #e0e0e0;
+      padding: 20px 0;
+    }
+
+    nav button {
+      width: 100%;
+      background: none;
+      border: none;
+      color: #333;
+      text-align: left;
+      padding: 15px 20px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s;
+      border-left: 4px solid transparent;
+    }
+
+    nav button:hover {
+      background: #e8e8e8;
+    }
+
+    nav button.active {
+      background: #e8e8e8;
+      border-left-color: #667eea;
+      color: #667eea;
+      font-weight: 600;
+    }
+
+    .section-selector {
+      padding: 20px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .section-selector label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+      font-size: 13px;
+    }
+
+    .section-selector select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .content {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+      max-height: 800px;
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    .view h2 {
+      color: #333;
+      margin-bottom: 30px;
+      font-size: 24px;
+      border-bottom: 2px solid #667eea;
+      padding-bottom: 10px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-card h3 {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: 10px;
+    }
+
+    .stat-card .value {
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      border-left: 4px solid #667eea;
+      padding-left: 10px;
+    }
+
+    .learner-list {
+      list-style: none;
+      background: #f8f9fa;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .learner-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      border-bottom: 1px solid #e0e0e0;
+      background: white;
+    }
+
+    .learner-item:hover {
+      background: #f8f9fa;
+    }
+
+    .learner-item:last-child {
+      border-bottom: none;
+    }
+
+    .learner-name {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .learner-score {
+      background: #667eea;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .form-section {
+      background: #f8f9fa;
+      padding: 30px;
+      border-radius: 8px;
+      margin-top: 30px;
+    }
+
+    .form-section h3 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .form-grid input,
+    .form-grid select {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .logout-btn {
+      background: #e74c3c;
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .text-center {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #999;
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        flex-direction: column;
+      }
+
+      nav {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .content {
+        padding: 20px;
+        max-height: none;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📚 School Evaluation App</h1>
+      <p>Ndumbinyi Primary and Junior School</p>
+    </header>
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen">
+      <div class="login-box">
+        <h2>Login</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Enter username" required />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter password" required />
+          </div>
+          <button type="submit">Login</button>
+          <div id="loginError"></div>
+        </form>
+        <div class="text-center">
+          Demo: Username: <strong>teacher</strong> | Password: <strong>password</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN DASHBOARD -->
+    <div class="main-content" id="dashboardContainer" style="display: none;">
+      <nav>
+        <div class="section-selector">
+          <label for="sectionSelect">Section:</label>
+          <select id="sectionSelect">
+            <option value="primary">Primary</option>
+            <option value="junior">Junior</option>
+          </select>
+        </div>
+        <button class="nav-btn active" data-view="dashboard">📊 Dashboard</button>
+        <button class="nav-btn" data-view="learners">👥 Records</button>
+        <button class="nav-btn" data-view="reports">📈 Reports</button>
+        <button class="nav-btn" data-view="settings">⚙️ Settings</button>
+        <button class="logout-btn" id="logoutBtn">🚪 Logout</button>
+      </nav>
+
+      <div class="content">
+        <!-- DASHBOARD VIEW -->
+        <div class="view active" id="dashboardView">
+          <h2>📊 Performance Dashboard</h2>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <h3>Total Learners</h3>
+              <div class="value" id="totalLearners">0</div>
+            </div>
+            <div class="stat-card">
+              <h3>Class Average</h3>
+              <div class="value" id="classAverage">0%</div>
+            </div>
+            <div class="stat-card">
+              <h3>Highest Score</h3>
+              <div class="value" id="highestAverage">0%</div>
+            </div>
+            <div class="stat-card">
+              <h3>Need Support</h3>
+              <div class="value" id="supportCount">0</div>
+            </div>
+          </div>
+          <div class="section-title">📚 Subject Performance</div>
+          <div id="subjectBars"></div>
+          <div class="section-title">⭐ Top Learners</div>
+          <ul class="learner-list" id="topLearners"></ul>
+          <div class="section-title">📈 Most Improved</div>
+          <ul class="learner-list" id="improvedLearners"></ul>
+        </div>
+
+        <!-- CLASS RECORDS VIEW -->
+        <div class="view" id="learnersView">
+          <h2>👥 Class Records</h2>
+          <p style="margin-bottom: 20px;">Selected Class: <strong id="selectedClassName">Grade 1</strong></p>
+          <ul class="learner-list" id="classRoster"></ul>
+        </div>
+
+        <!-- REPORTS VIEW -->
+        <div class="view" id="reportsView">
+          <h2>📈 Learner Reports</h2>
+          <div class="form-section">
+            <h3>Add/Edit Learner Score</h3>
+            <div id="scoreInputs"></div>
+          </div>
+        </div>
+
+        <!-- SETTINGS VIEW -->
+        <div class="view" id="settingsView">
+          <h2>⚙️ Settings</h2>
+          
+          <div class="form-section">
+            <h3>Register New Learner</h3>
+            <form id="registrationForm">
+              <div class="form-grid">
+                <input type="text" id="newLearnerName" placeholder="Learner Name" required />
+                <input type="text" id="newLearnerAdmission" placeholder="Admission Number" required />
+                <select id="newLearnerClass" required>
+                  <option value="">Select Class</option>
+                </select>
+              </div>
+              <button type="submit">Register Learner</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
